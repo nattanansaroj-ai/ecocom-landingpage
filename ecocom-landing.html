@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECOCOM - ระบบโทรศัพท์ VoIP และโซลูชันธุรกิจ</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel Standalone for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        .animate-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const App = () => {
+            const [activeTab, setActiveTab] = useState('shop');
+
+            // Logo URLs - Blogger CDN
+            const logoUrls = {
+                ecocom: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjOw1cn4ja15WLXlU-vtRr9cClrBG9rJKXt_IKBLNmpIwzAH4181CQZCkH6IkFmPSXbTVs70Swa3Qm28G5JIAD4K-NB5iVszlGN038vhp86YvIs754iIBRgwGBieAUZpZl0m9eaGTi7_KtLwhoVjdETH4_FlSqK5EbX0Bks8ltdoc4qowfhrrEeWr8sEJ28/w403-h143/LOGO-ECOCOM-PNG.png",
+                ecocomshop: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgB7JoEyCxHQg0tpvBLwtY5d4khpufAFaG5KoOdOo8HrEmBBsDvsrLg_mNSDS9TAuUM-daKeOZdB4v4RcON5WH_O0zcsfQPeIek8MRW9CzD5xRDcB-1B02IBfTYjIYk3wjon48cbEov5jWWoVjdHqlx68G2USzVvhsJ2vxPrYyufDyxMZ8EmwlrND2dWrEv/s320/mascot-ecocomshop-png.png",
+                ecocall: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiRvHTCU-1OqMy9lIIGblbX0dH8tb5zKhwwEXdMcf_BVlbwG8DOcJbaeMNHbrGV203AzkCWCRi7rPEZiLyVHLNsSJx-AwU9AYy21Ck0VGltdrjmYyNFsqstpSx_H4yUzerA9VsIz5AY9Or9Pbb8zfcuEAlJVW8b8JmxlDuloXMYKP_fYaO8XIIuKRxr7_B0/s320/ECOCALL-PNG.png",
+                prvariety: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9IKnOxE8mo2T8Wgn5FvWy_PALPy5hV8PpAUAlckD9Q1lg7b3MjoM2HIrCA33sMuXPh2fsJ9sESA5TsI5iOX4ZAsKl5xRpuYrenKz4kjlZwxYDLh_qzql-4a4m-JxBayWEgvNeW5ti2v3KuRNpYFDSHEJOxzOrFkDM3qUAQ70qrujfDGcsLtxsOU3B59E/w305-h185/logo-prvariety-2026-png.png"
+            };
+
+            // ข้อมูลส่วนงานธุรกิจ
+            const businessUnits = {
+                shop: {
+                    id: 'shop',
+                    title: "EcocomShop",
+                    logo: logoUrls.ecocomshop,
+                    subtitle: "ศูนย์รวมอุปกรณ์ระบบโทรศัพท์ VoIP ครบวงจร",
+                    desc: "ตัวแทนจำหน่ายอย่างเป็นทางการแบรนด์ DINSTAR, VT และ ATCOM มั่นใจในคุณภาพสินค้าและการรับประกันระดับ Enterprise",
+                    features: ["ตู้สาขา IP PBX & โทรศัพท์ IP Phone", "VoIP Gateway (GSM/Analog/Digital)", "หูฟังคอลเซ็นเตอร์ VT (VBeT) ของแท้", "ระบบบันทึกเสียงสนทนาโทรศัพท์"],
+                    color: "bg-green-600",
+                    textColor: "text-green-600",
+                    borderColor: "border-green-600",
+                    link: "https://www.ecocomshop.net/"
+                },
+                ecocall: {
+                    id: 'ecocall',
+                    title: "ECOCALL",
+                    logo: logoUrls.ecocall,
+                    subtitle: "ผู้นำระบบโทรประหยัดสำหรับธุรกิจ SME",
+                    desc: "โซลูชันระบบโทรศัพท์ผ่านซิมมือถือโปรโมชั่นบุฟเฟต์ ช่วยลดค่าโทรรายเดือนได้สูงสุด 70% พร้อมฟีเจอร์จัดการสายครบครัน",
+                    features: ["ระบบโทรศัพท์ประหยัดค่าโทร (Buffet Sim)", "ระบบบันทึกเสียงตาม พรบ. ทวงถามหนี้", "ระบบเช่าตู้สาขาไอพี (Cloud/On-Premise)", "รายงานสรุปการโทร (CDR Report)"],
+                    color: "bg-green-700",
+                    textColor: "text-green-700",
+                    borderColor: "border-green-700",
+                    link: "https://sites.google.com/ecocom.co.th/ecocall/"
+                },
+                pr: {
+                    id: 'pr',
+                    title: "PRvariety",
+                    logo: logoUrls.prvariety,
+                    subtitle: "เพิ่มการรับรู้แบรนด์ผ่านข่าวออนไลน์",
+                    desc: "เพิ่ม Visibility และความน่าเชื่อถือให้แบรนด์ผ่านเครือข่ายสื่อออนไลน์ ช่วยเสริมสร้าง SEO ให้ติดอันดับการค้นหา",
+                    features: ["รับฝากข่าวประชาสัมพันธ์ออนไลน์", "เพิ่มประสิทธิภาพด้าน SEO Backlink", "สร้าง Brand Awareness ให้เป็นที่รู้จัก", "กระจายข้อมูลข่าวสารสู่สาธารณะ"],
+                    color: "bg-orange-500",
+                    textColor: "text-orange-600",
+                    borderColor: "border-orange-500",
+                    link: "https://prvarietynews.blogspot.com/"
+                }
+            };
+
+            // Icon components
+            const ShoppingCart = () => <i data-lucide="shopping-cart"></i>;
+            const Phone = () => <i data-lucide="phone"></i>;
+            const Globe = () => <i data-lucide="globe"></i>;
+            const Users = () => <i data-lucide="users"></i>;
+            const TrendingUp = () => <i data-lucide="trending-up"></i>;
+            const ShieldCheck = () => <i data-lucide="shield-check"></i>;
+            const CheckCircle = () => <i data-lucide="check-circle"></i>;
+            const ExternalLink = () => <i data-lucide="external-link"></i>;
+            const MapPin = () => <i data-lucide="map-pin"></i>;
+            const ChevronRight = () => <i data-lucide="chevron-right"></i>;
+
+            React.useEffect(() => {
+                lucide.createIcons();
+            });
+
+            return (
+                <div className="min-h-screen bg-white text-slate-800">
+                    {/* Navigation */}
+                    <nav className="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-md border-b border-green-100 shadow-sm">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="flex justify-between h-20 items-center">
+                                <div className="flex-shrink-0">
+                                    <img 
+                                        src={logoUrls.ecocom} 
+                                        alt="ECOCOM" 
+                                        className="h-10 md:h-12 w-auto object-contain"
+                                    />
+                                </div>
+                                <div className="hidden md:flex space-x-10 text-base font-bold text-slate-600">
+                                    <a href="#home" className="hover:text-green-600 transition-colors">หน้าแรก</a>
+                                    <a href="#services" className="hover:text-green-600 transition-colors">บริการ</a>
+                                    <a href="#contact" className="hover:text-green-600 transition-colors">ติดต่อเรา</a>
+                                </div>
+                                <button className="bg-green-600 text-white px-8 py-2.5 rounded-full text-base font-bold hover:bg-green-700 transition-all shadow-lg active:scale-95">
+                                    ปรึกษาฟรี
+                                </button>
+                            </div>
+                        </div>
+                    </nav>
+
+                    {/* Hero Section */}
+                    <header id="home" className="relative pt-32 pb-20 md:pt-48 md:pb-36 overflow-hidden bg-gradient-to-br from-green-900 via-green-800 to-emerald-950 text-white">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                            <div className="grid lg:grid-cols-2 gap-16 items-center">
+                                <div className="animate-up text-center lg:text-left">
+                                    <div className="inline-flex items-center px-4 py-1 rounded-full bg-white/10 border border-white/20 text-green-300 text-sm font-bold mb-8">
+                                        EST. 2012 | PROFESSIONAL VOIP TEAM
+                                    </div>
+                                    <h1 className="text-5xl md:text-7xl font-extrabold leading-tight mb-8">
+                                        ยกระดับการสื่อสาร <br/>
+                                        <span className="text-green-400 font-black tracking-tight">ประหยัดต้นทุน 70%</span>
+                                    </h1>
+                                    <p className="text-xl md:text-2xl text-green-50/80 mb-10 max-w-xl leading-relaxed font-light mx-auto lg:mx-0">
+                                        บริษัท อีโคคอม จำกัด มอบนวัตกรรมระบบโทรศัพท์และโซลูชันการตลาดออนไลน์ที่คุ้มค่าที่สุดสำหรับคุณ
+                                    </p>
+                                    <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                                        <a href="#services" className="bg-white text-green-900 px-10 py-4 rounded-2xl text-xl font-bold hover:bg-green-50 shadow-xl transition-all">
+                                            ดูบริการทั้งหมด
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                                <div className="hidden lg:flex justify-center animate-up" style={{animationDelay: '0.2s'}}>
+                                    <div className="bg-white/5 backdrop-blur-2xl p-10 rounded-[2.5rem] border border-white/10 shadow-2xl grid grid-cols-2 gap-8 w-[450px]">
+                                        {[
+                                            { label: "Experience", value: "14+" },
+                                            { label: "Saving", value: "70%" },
+                                            { label: "Warranty", value: "2Y" },
+                                            { label: "Support", value: "24/7" }
+                                        ].map((stat, i) => (
+                                            <div key={i} className="text-center p-6 border border-white/5 rounded-3xl bg-white/5 hover:bg-white/10 transition-all">
+                                                <div className="text-3xl font-black text-green-400 mb-1">{stat.value}</div>
+                                                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{stat.label}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
+                    {/* Business Units */}
+                    <section id="services" className="py-24 bg-slate-50">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
+                            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 uppercase tracking-tight">Business Structure</h2>
+                            <div className="w-24 h-1.5 bg-green-600 mx-auto rounded-full mb-8"></div>
+                        </div>
+
+                        <div className="max-w-6xl mx-auto px-4 mb-12">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {Object.values(businessUnits).map((unit) => (
+                                    <button
+                                        key={unit.id}
+                                        onClick={() => setActiveTab(unit.id)}
+                                        className={`flex flex-col items-center p-8 rounded-[2rem] transition-all duration-500 border-4 bg-white ${
+                                            activeTab === unit.id ? `${unit.borderColor} shadow-2xl scale-105 z-10` : 'border-transparent opacity-70 shadow-sm hover:opacity-100'
+                                        }`}
+                                    >
+                                        <div className="h-16 flex items-center justify-center mb-4 w-full">
+                                            <img 
+                                                src={unit.logo} 
+                                                alt={unit.title} 
+                                                className="max-h-full w-auto object-contain"
+                                            />
+                                        </div>
+                                        <span className={`text-xl font-black uppercase tracking-tight ${activeTab === unit.id ? unit.textColor : 'text-slate-400'}`}>
+                                            {unit.title}
+                                        </span>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Tab Detail */}
+                        <div className="max-w-7xl mx-auto px-4">
+                            <div className="bg-white rounded-[3.5rem] shadow-2xl overflow-hidden border border-green-50 grid lg:grid-cols-2 animate-up">
+                                <div className="p-10 md:p-20 flex flex-col justify-center">
+                                    <div className="flex items-center space-x-5 mb-8">
+                                        <div className={`w-14 h-14 rounded-2xl ${businessUnits[activeTab].color} flex items-center justify-center text-white shadow-xl`}>
+                                            {activeTab === 'shop' && <i data-lucide="shopping-cart" className="w-8 h-8"></i>}
+                                            {activeTab === 'ecocall' && <i data-lucide="phone" className="w-8 h-8"></i>}
+                                            {activeTab === 'pr' && <i data-lucide="globe" className="w-8 h-8"></i>}
+                                        </div>
+                                        <h3 className={`text-3xl font-black uppercase ${businessUnits[activeTab].textColor}`}>{businessUnits[activeTab].title}</h3>
+                                    </div>
+                                    <h4 className="text-2xl md:text-3xl font-bold text-slate-800 mb-6 leading-tight">{businessUnits[activeTab].subtitle}</h4>
+                                    <p className="text-xl text-slate-500 mb-10 leading-relaxed font-medium">{businessUnits[activeTab].desc}</p>
+                                    <div className="grid sm:grid-cols-2 gap-4 mb-12">
+                                        {businessUnits[activeTab].features.map((f, i) => (
+                                            <div key={i} className="flex items-center space-x-3 p-4 bg-slate-50 rounded-2xl border border-slate-100 font-bold text-slate-700">
+                                                <i data-lucide="check-circle" className={`w-5 h-5 flex-shrink-0 ${businessUnits[activeTab].textColor}`}></i>
+                                                <span>{f}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <a href={businessUnits[activeTab].link} target="_blank" rel="noopener noreferrer" className={`inline-flex items-center px-10 py-4 rounded-2xl text-white text-lg font-bold shadow-xl transition-all hover:-translate-y-1 ${businessUnits[activeTab].color}`}>
+                                        เยี่ยมชมเว็บไซต์ <i data-lucide="external-link" className="ml-2 w-5 h-5"></i>
+                                    </a>
+                                </div>
+                                <div className="bg-slate-100/50 flex items-center justify-center p-12 relative border-l border-slate-100">
+                                    <div className="bg-white p-12 rounded-[3.5rem] shadow-xl w-full max-w-xs text-center">
+                                        <div className="h-32 flex items-center justify-center mb-4">
+                                            <img 
+                                                src={businessUnits[activeTab].logo} 
+                                                alt={businessUnits[activeTab].title} 
+                                                className="max-h-full w-auto object-contain"
+                                            />
+                                        </div>
+                                        <div className="text-slate-400 font-bold uppercase tracking-[0.2em] text-[10px]">Quality Communication Partner</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Footer */}
+                    <footer id="contact" className="bg-slate-950 text-white pt-24 pb-12">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="grid md:grid-cols-12 gap-12 mb-20">
+                                <div className="md:col-span-5">
+                                    <div className="bg-white inline-block p-4 rounded-2xl mb-8">
+                                        <img 
+                                            src={logoUrls.ecocom} 
+                                            alt="ECOCOM" 
+                                            className="h-10 w-auto object-contain"
+                                        />
+                                    </div>
+                                    <p className="text-xl text-slate-400 leading-relaxed max-w-md mb-10 font-medium italic">
+                                        "เราช่วยให้ธุรกิจของคุณสื่อสารได้อย่างไร้รอยต่อ ในต้นทุนที่คุ้มค่าที่สุด"
+                                    </p>
+                                </div>
+                                <div className="md:col-span-4">
+                                    <h4 className="text-xl font-bold mb-8 text-green-400 uppercase tracking-widest">Contact Info</h4>
+                                    <ul className="space-y-6 text-slate-400 text-lg">
+                                        <li className="flex items-start">
+                                            <i data-lucide="map-pin" className="mr-4 w-6 h-6 text-green-500 flex-shrink-0 mt-1"></i>
+                                            <span className="leading-relaxed text-sm">8/145 ม.เทรนดี้ ธารา พระราม 2 ซ.อนามัยงามเจริญ 11 บางขุนเทียน กทม. 10150</span>
+                                        </li>
+                                        <li className="flex items-center">
+                                            <i data-lucide="phone" className="mr-4 w-6 h-6 text-green-500 flex-shrink-0"></i>
+                                            <span className="font-bold text-white tracking-wide underline underline-offset-4 decoration-green-600/30">063-269-8988, 063-269-6364</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div className="md:col-span-3">
+                                    <h4 className="text-xl font-bold mb-8 text-green-400 uppercase tracking-widest">Networks</h4>
+                                    <ul className="space-y-5 text-slate-400 text-lg font-bold">
+                                        <li><a href="https://www.ecocomshop.net/" className="hover:text-green-500 transition-colors flex items-center"><i data-lucide="chevron-right" className="mr-2 w-4 h-4"></i> EcocomShop</a></li>
+                                        <li><a href="https://sites.google.com/ecocom.co.th/ecocall/" className="hover:text-green-500 transition-colors flex items-center"><i data-lucide="chevron-right" className="mr-2 w-4 h-4"></i> ECOCALL</a></li>
+                                        <li><a href="https://prvarietynews.blogspot.com/" className="hover:text-green-500 transition-colors flex items-center"><i data-lucide="chevron-right" className="mr-2 w-4 h-4"></i> PRvariety</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div className="pt-10 border-t border-white/5 text-center text-slate-600 text-xs font-bold tracking-[0.3em] uppercase">
+                                © {new Date().getFullYear()} ECOCOM.CO.,LTD. ALL RIGHTS RESERVED.
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+
+        // Reinitialize icons after render
+        setTimeout(() => {
+            lucide.createIcons();
+        }, 100);
+    </script>
+</body>
+</html>
