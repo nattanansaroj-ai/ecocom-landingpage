@@ -166,8 +166,68 @@
         renderTabContent('shop');
 
         // Chart configuration (คงเดิม) ...
+        // 1. ข้อมูลสำหรับทำกราฟ
+        const chartData = {
+            labels: ['เดือน 1', 'เดือน 2', 'เดือน 3', 'เดือน 4', 'เดือน 5', 'เดือน 6', 'เดือน 7', 'เดือน 8', 'เดือน 9', 'เดือน 10', 'เดือน 11', 'เดือน 12'],
+            cumulative: {
+                analog: [20000, 40000, 60000, 80000, 100000, 120000, 140000, 160000, 180000, 200000, 220000, 240000],
+                ecocall: [5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 55000, 60000]
+            },
+            monthly: {
+                analog: [20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000],
+                ecocall: [5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000]
+            }
+        };
+
+        // 2. ตั้งค่า Chart.js
         const ctx = document.getElementById('roiChart').getContext('2d');
-        new Chart(ctx, { /* ... ส่วนประกอบกราฟ ... */ });
+        let roiChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartData.labels,
+                datasets: [
+                    {
+                        label: 'ตู้สาขาแบบเก่า (Analog PBX)',
+                        data: chartData.cumulative.analog,
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'โซลูชัน ECOCALL Buffet Sim',
+                        data: chartData.cumulative.ecocall,
+                        borderColor: '#22c55e',
+                        backgroundColor: 'rgba(34, 197, 94, 0.2)',
+                        borderWidth: 4,
+                        tension: 0.3,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { 
+                        beginAtZero: true,
+                        ticks: { callback: function(value) { return '฿' + value.toLocaleString(); } }
+                    }
+                }
+            }
+        });
+
+        // 3. ฟังก์ชันสลับโหมด Cumulative / Monthly
+        const dataSelector = document.getElementById('dataSelector');
+        if(dataSelector) {
+            dataSelector.addEventListener('change', (e) => {
+                const mode = e.target.value;
+                roiChart.data.datasets[0].data = chartData[mode].analog;
+                roiChart.data.datasets[1].data = chartData[mode].ecocall;
+                roiChart.update();
+            });
+        }
     </script>
 </body>
 </html>
